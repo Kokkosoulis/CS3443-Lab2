@@ -1,32 +1,58 @@
-//Alexander Kokkosoulis
-//ots068
 //COSC 3443-1
 //9/13/18
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * Fleet represents a unique conglomerate of ships 
+ * 
+ * @author Alexander Kokkosoulis (ots068)
+ */
 public class Fleet {
 	private String name;
 	private ArrayList<Starship> ships = new ArrayList<Starship>();
+	
+	/**
+	 * Default Constructor for Fleet, sets name to ""
+	 */
 	public Fleet(){
 		setName("");
 	}
+	/**
+	 * Overloaded Constructor for Fleet, sets name to n
+	 * @param n Name to set for the Fleet
+	 */
 	public Fleet(String n){
 		setName(n);
 	}
+	/**
+	 * sets the name of the Fleet
+	 * @param n Name to set for the Fleet
+	 */
 	public void setName(String n){
 		name = n;
 	}
+	/**
+	 * Returns the name of the Fleet
+	 * @return String name of the Fleet
+	 */
 	public String getName(){
 		return name;
 	}
+	/**
+	 * adds one starship to the ships array
+	 * @param s Starship to add to ships
+	 */
 	public void addStarship(Starship s){
 		ships.add(s);
 	}
+	/**
+	 * reads the contents of a file and saves them to a the fleet as Starships
+	 * @param f location of file to be read in
+	 * @throws IOException in the case of the file being unopenable
+	 */
 	public void loadStarships(String f) throws IOException {
 		File file = new File(f);
 		Scanner scan = new Scanner(file);
@@ -41,6 +67,11 @@ public class Fleet {
 		}
 		scan.close();
 	}
+	/**
+	 * reads the contents of a file and saves them to a the fleet as CrewMembers on specified Starships
+	 * @param f location of file to be read in
+	 * @throws IOException in the case of the file being unopenable
+	 */
 	public void loadCrew(String f) throws IOException  {
 		File file = new File(f);
 		Scanner scan = new Scanner(file);
@@ -62,6 +93,11 @@ public class Fleet {
 		}
 		scan.close();
 	}
+	/**
+	 * assigns a CrewMember found by name to a starship found by registry
+	 * @param n name of CrewMember to be reassigned
+	 * @param r registry of ship to be assigned to
+	 */
 	public void reassign(String n,String r) {
 		CrewMember c = new CrewMember();
 		for (int i=0;i<ships.size();i++) {
@@ -80,6 +116,10 @@ public class Fleet {
 			}
 		}
 	}
+	/**
+	 * saves the contents of the fleet to two files
+	 * @throws IOException in the case that either of the two destination files dont exist
+	 */
 	public void save() throws IOException {
 		String s = "";
 		String c = "";
@@ -95,13 +135,11 @@ public class Fleet {
 		FileWriter personnel = new FileWriter("data/personnel.csv" );
 		personnel.write(c);
 		personnel.close();
-		//create a uml diagram (10pts)
-		//create a javadoc (10pts)
-		
-		//create save method which overwrites provieded
-		//files with current info in the same format as provided
 		
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString(){
 		String t = "------------------------------------------------------- \n" + name + "\n-------------------------------------------------------\n\n";
 		for (int i = 0;i < ships.size(); i++){
