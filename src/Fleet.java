@@ -1,16 +1,13 @@
 //Alexander Kokkosoulis
 //ots068
 //COSC 3443-1
-//[[date]]
+//9/13/18
 
-//change ships array to arraylist
-// add loadStarships and loadCrew methods
-// create object from either type and add them to the fleet
-// "loadStarships(..) and loadCrew(..). Both methods will take in a file name and throw an IOException. These object methods will load the data in the given file into the appropriate objects (starships are added to the fleet, and crew members are added to starships). "
-//create reassign method, takes crewmember name and starship registry and removes the crewmember from their current ship and adds them to the specified one
-//create save method which overwrites proviededfiles with current info in the same format as provided
-
-import java.util.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Fleet {
 	private String name;
@@ -30,29 +27,79 @@ public class Fleet {
 	public void addStarship(Starship s){
 		ships.add(s);
 	}
-	public void loadStarships(String f){
-		
+	public void loadStarships(String f) throws IOException {
+		File file = new File(f);
+		Scanner scan = new Scanner(file);
+		scan.useDelimiter(",|\\n");
+		Starship s;
+		while(scan.hasNext()) {
+			s = new Starship();
+			s.setName(scan.next());
+			s.setRegistry(scan.next());
+			s.setKlass(scan.next());
+			ships.add(s);
+		}
+		scan.close();
 	}
-	public void loadCrew(String f) {
-		
+	public void loadCrew(String f) throws IOException  {
+		File file = new File(f);
+		Scanner scan = new Scanner(file);
+		scan.useDelimiter(",|\\n");
+		CrewMember c;
+		String s;
+		while(scan.hasNext()) {
+			c = new CrewMember();
+			c.setName(scan.next());
+			c.setPosition(scan.next());
+			c.setRank(scan.next());
+			s = scan.next();
+			c.setSpecies(scan.next());
+			for (int i=0;i<ships.size();i++) {
+				if (ships.get(i).getRegistry().equals(s)) {
+					ships.get(i).addCrewMember(c);
+				}
+			}
+		}
+		scan.close();
 	}
 	public void reassign(String n,String r) {
-		CrewMember c;
+		CrewMember c = new CrewMember();
+		for (int i=0;i<ships.size();i++) {
+			for (int j=0;j<ships.get(i).getCrewSize();j++) {
+				if (n.equals(ships.get(i).getCrewMember(j).getName())) {
+					c = ships.get(i).getCrewMember(j);
+				}
+			}
+		}
 		for (int i = 0; i<ships.size();i++) {
-			//ships[i].removeCrewMember(n);
+			ships.get(i).removeCrewMember(c);
 		}
 		for (int i = 0; i<ships.size();i++) {
 			if (ships.get(i).getRegistry().equals(r)) {
 				ships.get(i).addCrewMember(c);
 			}
 		}
-		//for loop ship arraylist .size
-		// ship[i].removecrewmember c
-		//for ship.size
-		//	if ship[i].getregistry =r
-		//		ship[i].addcrewmemberc
 	}
-	public void save() {
+	public void save() throws IOException {
+		String s = "";
+		String c = "";
+		for (int i=0;i<ships.size();i++) {
+			s = s + ships.get(i).getName() + ',' + ships.get(i).getRegistry() + ',' + ships.get(i).getKlass() + "\n";
+			for (int j=0;j<ships.get(i).getCrewSize();j++) {
+				c = c + ships.get(i).getCrewMember(j).getName() + ',' + ships.get(i).getCrewMember(j).getPosition() + ',' + ships.get(i).getCrewMember(j).getRank() + ',' + ships.get(i).getRegistry() + ',' + ships.get(i).getCrewMember(j).getSpecies() + "\n"; 
+			}
+		}
+		FileWriter fleet = new FileWriter( "data/fleet.csv" );
+		fleet.write(s);
+		fleet.close();
+		FileWriter personnel = new FileWriter("data/personnel.csv" );
+		personnel.write(c);
+		personnel.close();
+		//create a uml diagram (10pts)
+		//create a javadoc (10pts)
+		
+		//create save method which overwrites provieded
+		//files with current info in the same format as provided
 		
 	}
 	public String toString(){

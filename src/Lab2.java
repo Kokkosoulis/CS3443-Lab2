@@ -1,10 +1,9 @@
 //Alexander Kokkosoulis
 //ots068
 //COSC 3443-1
-//[[date]]
+//9/13/18
 
-//create a uml diagram (10pts)
-//create a javadoc (10pts)
+import java.io.IOException;
 
 public class Lab2 {	
   	public static void main( String[] args ) {	
@@ -13,13 +12,11 @@ public class Lab2 {
      	try{	
 
         	federation.loadStarships( "data/fleet.csv" );	
-        	federation.loadCrew( "data/personnel.csv" );	
-
+        	federation.loadCrew( "data/personnel.csv" );
      	}catch( IOException e ){	
         	System.out.println( "Error loading the file - please check its location." );	
         	e.printStackTrace();	
      	}	
-
      	System.out.println( federation );	
   	}	
 }	

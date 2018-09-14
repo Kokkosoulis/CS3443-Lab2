@@ -1,7 +1,7 @@
 //Alexander Kokkosoulis
 //ots068
 //COSC 3443-1
-//[[date]]
+//9/13/18
 
 
 public class CrewMember {
